@@ -3,6 +3,7 @@ module pc( // Program Counter
 	//input logic WE_i, // Write Enable
 	input logic clk_i,
 	input logic rst_ni,
+	input logic enable_i,
 	output logic [31:0] data_o
 	);
 	
@@ -14,7 +15,7 @@ module pc( // Program Counter
 	always_ff @(posedge clk_i) begin
 		//if (WE_i) data_o <= data_i;
 		if (~rst_ni) data_o <= 32'b0;
-		else data_o <= data_i;
+		else if (enable_i) data_o <= data_i;
 		//mem <= data_o;
 	end
 	

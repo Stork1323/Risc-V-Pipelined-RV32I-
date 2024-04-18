@@ -17,7 +17,6 @@ module Branch_prediction(
 	input logic [31:0] inst_ex_i,
 	input logic [31:0] alu_i,
 	output logic PCsel_o,
-	output logic check_jump_o,
 	output logic [31:0] pc_alu_o
 	);
 	
@@ -27,8 +26,6 @@ module Branch_prediction(
 	assign opcode_r = inst_ex_i[6:0];
 	assign funct3 = inst_ex_i[14:12];
 	
-	assign check_jump_o = ((opcode_r == `OP_Btype) | (opcode_r == `OP_JAL) |
-								 (opcode_r == `OP_Btype)) ? 1'b1 : 1'b0;
 								 
 	assign PCsel_o = ((opcode_r == `OP_Btype) & ((funct3 == `BEQ) & (BrEq_i))  | 
 						  ((opcode_r == `OP_Btype) & (funct3 == `BNE) & (~BrEq_i))  | 

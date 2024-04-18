@@ -38,13 +38,18 @@ module pipeline(
 	logic [31:0] alu_w;
 	logic PCSel_w;
 	logic [31:0] pc_alu_w;
-	logic check_jump_w;
+	
+	logic Stall_IF_w, Stall_ID_w, Flush_ID_w, Stall_EX_w, Flush_EX_w, Stall_MEM_w, Flush_MEM_w, Stall_WB_w;
+	logic Flush_WB_w;
 	
 	IF IF(
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
 		.PC_sel_i(PCSel_w),
 		.PC_alu_i(pc_alu_w),
+		.enable_pc_i(~Stall_IF_w),
+		.enable_i(~Stall_ID_w),
+		.reset_i(Flush_ID_w),
 		.pc_d_o(pc_d_w),
 		.inst_d_o(inst_d_w),
 		.pc4_d_o(pc4_d_w)
@@ -59,6 +64,8 @@ module pipeline(
 		.pc4_d_i(pc4_d_w),
 		.RegWEn_i(RegWEn_wb_w),
 		.rsW_i(rsW_wb_w),
+		.enable_i(~Stall_EX_w),
+		.reset_i(Flush_EX_w),
 		.rs1_ex_o(rs1_ex_w),
 		.rs2_ex_o(rs2_ex_w),
 		.imm_ex_o(imm_ex_w),
@@ -94,7 +101,9 @@ module pipeline(
 		.Asel_haz_i(Asel_haz_w),
 		.Bsel_haz_i(Bsel_haz_w),
 		.inst_ex_i(inst_ex_w),
-		.alu_wb_i(alu_wb_w),
+		.data_wb_i(data_wb_w),
+		.enable_i(~Stall_MEM_w),
+		.reset_i(Flush_MEM_w),
 		.alu_mem_o(alu_mem_w),
 		.rs2_mem_o(rs2_mem_w),
 		.pc4_mem_o(pc4_mem_w),
@@ -120,6 +129,8 @@ module pipeline(
 		.rsW_mem_i(rsW_mem_w),
 		.io_sw_i(io_sw_i),
 		.inst_mem_i(inst_mem_w),
+		.enable_i(~Stall_WB_w),
+		.reset_i(Flush_WB_w),
 		.alu_wb_o(alu_wb_w),
 		.pc4_wb_o(pc4_wb_w),
 		.mem_wb_o(mem_wb_w),
@@ -154,14 +165,22 @@ module pipeline(
 		//.rsW_o(rsW_w)
 		);
 		
-	Forwarding_ctrl_unit FCU(
+	Hazard_unit FCU(
 		.rst_ni(rst_ni),
 		.RegWEn_mem_i(RegWEn_mem_w),
 		.RegWEn_wb_i(RegWEn_wb_w),
 		.inst_ex_i(inst_ex_w),
 		.inst_mem_i(inst_mem_w),
 		.inst_wb_i(inst_wb_w),
-		.check_jump_i(check_jump_w),
+		.Stall_IF(Stall_IF_w),
+		.Stall_ID(Stall_ID_w),
+		.Flush_ID(Flush_ID_w),
+		.Stall_EX(Stall_EX_w),
+		.Flush_EX(Flush_EX_w),
+		.Stall_MEM(Stall_MEM_w),
+		.Flush_MEM(Flush_MEM_w),
+		.Stall_WB(Stall_WB_w),
+		.Flush_WB(Flush_WB_w),
 		.Bsel_o(Bsel_haz_w),
 		.Asel_o(Asel_haz_w)
 		);
@@ -173,9 +192,9 @@ module pipeline(
 		.inst_ex_i(inst_ex_w),
 		.alu_i(alu_w),
 		.PCsel_o(PCSel_w),
-		.check_jump_o(check_jump_w),
 		.pc_alu_o(pc_alu_w)
 		);
+		
 	
 endmodule
 

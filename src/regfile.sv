@@ -45,7 +45,7 @@ module regfile( // Register file
 	
 	assign reg_r0_q = 32'b0;
 	
-	always_ff @(posedge clk_i) begin : Synchronous_register_write_back
+	always_ff @(negedge clk_i) begin : Synchronous_register_write_back
 		if (~rst_ni) begin
         reg_r1_q       <= 32'h00000000;
         reg_r2_q       <= 32'h00000000;
@@ -191,48 +191,5 @@ module regfile( // Register file
     assign data1_o = (rst_ni == 1'b0) ? 32'b0 : reg1_r;
     assign data2_o = (rst_ni == 1'b0) ? 32'b0 : reg2_r;
 	 
-/*
-	function set_register; //verilator public
-        input [4:0] r;
-        input [31:0] value;
-    begin
-        //case (r)
-        //5'd1:  reg_r1_q  <= value;
-        //5'd2:  reg_r2_q  <= value;
-        //5'd3:  reg_r3_q  <= value;
-        //5'd4:  reg_r4_q  <= value;
-        //5'd5:  reg_r5_q  <= value;
-        //5'd6:  reg_r6_q  <= value;
-        //5'd7:  reg_r7_q  <= value;
-        //5'd8:  reg_r8_q  <= value;
-        //5'd9:  reg_r9_q  <= value;
-        //5'd10: reg_r10_q <= value;
-        //5'd11: reg_r11_q <= value;
-        //5'd12: reg_r12_q <= value;
-        //5'd13: reg_r13_q <= value;
-        //5'd14: reg_r14_q <= value;
-        //5'd15: reg_r15_q <= value;
-        //5'd16: reg_r16_q <= value;
-        //5'd17: reg_r17_q <= value;
-        //5'd18: reg_r18_q <= value;
-        //5'd19: reg_r19_q <= value;
-        //5'd20: reg_r20_q <= value;
-        //5'd21: reg_r21_q <= value;
-        //5'd22: reg_r22_q <= value;
-        //5'd23: reg_r23_q <= value;
-        //5'd24: reg_r24_q <= value;
-        //5'd25: reg_r25_q <= value;
-        //5'd26: reg_r26_q <= value;
-        //5'd27: reg_r27_q <= value;
-        //5'd28: reg_r28_q <= value;
-        //5'd29: reg_r29_q <= value;
-        //5'd30: reg_r30_q <= value;
-        //5'd31: reg_r31_q <= value;
-        //default :
-        //    ;
-        //endcase
-    end
-    endfunction
-*/
 	
 endmodule

@@ -10,6 +10,8 @@ module MEM(
 	input logic [31:0] io_sw_i,
 	input logic [4:0] rsW_mem_i,
 	input logic [31:0] inst_mem_i,
+	input logic enable_i,
+	input logic reset_i,
 	output logic [31:0] alu_wb_o,
 	output logic [31:0] pc4_wb_o,
 	output logic [31:0] mem_wb_o,
@@ -69,14 +71,25 @@ module MEM(
 			rsW_r <= 5'b0;
 			inst_r <= 32'b0;
 		end
-		else begin
-			alu_r <= alu_mem_i;
-			pc4_r <= pc4_mem_i;
-			mem_r <= mem_w;
-			WBSel_r <= WBSel_mem_i;
-			RegWEn_r <= RegWEn_mem_i;
-			rsW_r <= rsW_mem_i;
-			inst_r <= inst_mem_i;
+		else if (enable_i) begin
+			if (reset_i) begin
+				alu_r <= 32'b0;
+				pc4_r <= 32'b0;
+				mem_r <= 32'b0;
+				WBSel_r <= 2'b0;
+				RegWEn_r <= 1'b0;
+				rsW_r <= 5'b0;
+				inst_r <= 32'b0;
+			end
+			else begin
+				alu_r <= alu_mem_i;
+				pc4_r <= pc4_mem_i;
+				mem_r <= mem_w;
+				WBSel_r <= WBSel_mem_i;
+				RegWEn_r <= RegWEn_mem_i;
+				rsW_r <= rsW_mem_i;
+				inst_r <= inst_mem_i;
+			end
 		end
 	end
 	

@@ -15,9 +15,11 @@ module EX(
 	input logic RegWEn_ex_i,
 	input logic [4:0] rsW_ex_i,
 	input logic [31:0] inst_ex_i,
-	input logic [31:0] alu_wb_i,
+	input logic [31:0] data_wb_i,
 	input logic [1:0] Asel_haz_i,
 	input logic [1:0] Bsel_haz_i,
+	input logic enable_i,
+	input logic reset_i,
 	output logic [31:0] alu_mem_o,
 	output logic [31:0] rs2_mem_o,
 	output logic [31:0] pc4_mem_o,
@@ -51,35 +53,37 @@ module EX(
 		.BrLt_o(BrLt_w)
 		);
 		
-	mux2to1_32bit Mux1_EX(
+	mux3to1_32bit Mux12_EX(
 		.a_i(rs1_ex_i),
+		.b_i(alu_r),
+		.c_i(data_wb_i),
+		.se_i(Asel_haz_i),
+		.r_o(rs1_ex_w)
+		);
+		
+	mux2to1_32bit Mux1_EX(
+		.a_i(rs1_ex_w),
 		.b_i(pc_ex_i),
 		.se_i(ASel_ex_i),
-		.c_o(rs1_ex_w)
-		);
-		
-	mux2to1_32bit Mux2_EX(
-		.a_i(rs2_ex_i),
-		.b_i(imm_ex_i),
-		.se_i(BSel_ex_i),
-		.c_o(rs2_ex_w)
-		);
-		
-	mux3to1_32bit Mux12_EX(
-		.a_i(rs1_ex_w),
-		.b_i(alu_r),
-		.c_i(alu_wb_i),
-		.se_i(Asel_haz_i),
-		.r_o(rs1_haz_w)
+		.c_o(rs1_haz_w)
 		);
 		
 	mux3to1_32bit Mux22_EX(
-		.a_i(rs2_ex_w),
+		.a_i(rs2_ex_i),
 		.b_i(alu_r),
-		.c_i(alu_wb_i),
+		.c_i(data_wb_i),
 		.se_i(Bsel_haz_i),
-		.r_o(rs2_haz_w)
-		);	
+		.r_o(rs2_ex_w)
+		);		
+		
+	mux2to1_32bit Mux2_EX(
+		.a_i(rs2_ex_w),
+		.b_i(imm_ex_i),
+		.se_i(BSel_ex_i),
+		.c_o(rs2_haz_w)
+		);
+		
+	
 	
 	alu ALU_EX(
 		.rs1_i(rs1_haz_w),
@@ -102,17 +106,31 @@ module EX(
 			rsW_r <= 5'b0;
 			inst_r <= 32'b0;
 		end
-		else begin
-			alu_r <= alu_w;
-			rs2_r <= rs2_ex_i;
-			pc4_r <= pc4_ex_i;
-			MemRW_r <= MemRW_ex_i;
-			WBSel_r <= WBSel_ex_i;
-			//BrEq_r <= BrEq_w;
-			//BrLt_r <= BrLt_w;
-			RegWEn_r <= RegWEn_ex_i;
-			rsW_r <= rsW_ex_i;
-			inst_r <= inst_ex_i;
+		else if (enable_i) begin
+			if (reset_i) begin
+				alu_r <= 32'b0;
+				rs2_r <= 32'b0;
+				pc4_r <= 32'b0;
+				MemRW_r <= 1'b0;
+				WBSel_r <= 2'b0;
+				//BrEq_r <= 1'b0;
+				//BrLt_r <= 1'b0;
+				RegWEn_r <= 1'b0;
+				rsW_r <= 5'b0;
+				inst_r <= 32'b0;
+			end
+			else begin
+				alu_r <= alu_w;
+				rs2_r <= rs2_ex_w;
+				pc4_r <= pc4_ex_i;
+				MemRW_r <= MemRW_ex_i;
+				WBSel_r <= WBSel_ex_i;
+				//BrEq_r <= BrEq_w;
+				//BrLt_r <= BrLt_w;
+				RegWEn_r <= RegWEn_ex_i;
+				rsW_r <= rsW_ex_i;
+				inst_r <= inst_ex_i;
+			end
 		end
 	end
 	

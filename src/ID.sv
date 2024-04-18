@@ -7,6 +7,8 @@ module ID(
 	input logic [31:0] pc4_d_i,
 	input logic RegWEn_i,
 	input logic [4:0] rsW_i,
+	input logic enable_i,
+	input logic reset_i,
 	output logic [31:0] rs1_ex_o,
 	output logic [31:0] rs2_ex_o,
 	output logic [31:0] imm_ex_o,
@@ -88,21 +90,39 @@ module ID(
 			rsW_r <= 5'b0;
 			inst_r <= 32'b0;
 		end
-		else begin
-			rs1_r <= rs1_w;
-			rs2_r <= rs2_w;
-			imm_r <= imm_w;
-			pc_r <= pc_d_i;	
-			pc4_r <= pc4_d_i;
-			AluSel_r <= AluSel_w;
-			BSel_r <= BSel_w;
-			ASel_r <= ASel_w;
-			MemRW_r <= MemRW_w;
-			WBSel_r <= WBSel_w;
-			BrUn_r <= BrUn_w;
-			RegWEn_r <= RegWEn_w;
-			rsW_r <= inst_d_i[11:7];
-			inst_r <= inst_d_i;
+		else if (enable_i) begin 
+			if (reset_i) begin
+				rs1_r <= 32'b0;
+				rs2_r <= 32'b0;
+				imm_r <= 32'b0;
+				pc_r <= 32'b0;
+				pc4_r <= 32'b0;
+				AluSel_r <= 4'b0;
+				BSel_r <= 1'b0;
+				ASel_r <= 1'b0;
+				MemRW_r <= 1'b0;
+				WBSel_r <= 2'b00;
+				BrUn_r <= 1'b0;
+				RegWEn_r <= 1'b0;
+				rsW_r <= 5'b0;
+				inst_r <= 32'b0;
+			end
+			else begin
+				rs1_r <= rs1_w;
+				rs2_r <= rs2_w;
+				imm_r <= imm_w;
+				pc_r <= pc_d_i;	
+				pc4_r <= pc4_d_i;
+				AluSel_r <= AluSel_w;
+				BSel_r <= BSel_w;
+				ASel_r <= ASel_w;
+				MemRW_r <= MemRW_w;
+				WBSel_r <= WBSel_w;
+				BrUn_r <= BrUn_w;
+				RegWEn_r <= RegWEn_w;
+				rsW_r <= inst_d_i[11:7];
+				inst_r <= inst_d_i;
+			end
 		end
 	end
 	

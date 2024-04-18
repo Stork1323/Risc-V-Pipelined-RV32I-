@@ -3,6 +3,9 @@ module IF(
 	input logic rst_ni,
 	input logic PC_sel_i,
 	input logic [31:0] PC_alu_i,
+	input logic enable_pc_i,
+	input logic enable_i, 
+	input logic reset_i,
 	output logic [31:0] pc_d_o,
 	output logic [31:0] inst_d_o,
 	output logic [31:0] pc4_d_o
@@ -24,6 +27,7 @@ module IF(
 		.data_i(PC_mux_w),
 		.clk_i(clk_i),
 		.rst_ni(rst_ni),
+		.enable_i(enable_pc_i),
 		.data_o(PC_w)
 		);
 	
@@ -46,10 +50,17 @@ module IF(
 			inst_r <= 32'b0;
 			PC_add4_r <= 32'b0;
 		end
-		else begin
-			PC_r <= PC_w;
-			inst_r <= inst_w;
-			PC_add4_r <= PC_add4_w;
+		else if (enable_i) begin
+			if (reset_i) begin
+				PC_r <= 32'b0;
+				inst_r <= 32'b0;
+				PC_add4_r <= 32'b0;
+			end
+			else begin
+				PC_r <= PC_w;
+				inst_r <= inst_w;
+				PC_add4_r <= PC_add4_w;
+			end
 		end
 	end
 	
