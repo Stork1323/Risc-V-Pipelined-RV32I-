@@ -2,7 +2,7 @@
 This project is developed from Single-cycle-process-risc-v-rv32I repository on my github.
 The project designs RV32I with pipelined architecture.
 The pipelined core is designed in 5 stages. 
-In this repository, I design 3 different models include:
+In this repository, I have designed 3 different models include:
   - Stall model: in this model, all hazard are solved by using stall and flush.
   - Forwarding model: in this model, data hazards are solved by using forwarding technique.
   - Branch prediction model: in this model, branch and jump instructions are optimized by using branch prediction technique.
