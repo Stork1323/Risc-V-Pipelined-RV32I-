@@ -6,6 +6,7 @@ In this repository, I design 3 different models include:
   - Stall model: in this model, all hazard are solved by using stall and flush.
   - Forwarding model: in this model, data hazards are solved by using forwarding technique.
   - Branch prediction model: in this model, branch and jump instructions are optimized by using branch prediction technique.
+    
 The detailed block diagram of stall model is depicted in the below picture.
 ![image](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/7c76f64d-d2dd-4e3c-b103-23eec925b33e)
 
