@@ -2,10 +2,10 @@
 This project is developed from Single-cycle-process-risc-v-rv32I repository on my github.
 The project designs RV32I with pipelined architecture.
 The pipelined core is designed in 5 stages. 
-In this repository, I have designed 3 different models include:
+In this repository, I have designed 4 different models include:
   - Stall model: in this model, all hazard are solved by using stall and flush.
   - Forwarding model: in this model, data hazards are solved by using forwarding technique.
-  - Branch prediction model: in this model, branch and jump instructions are optimized by using branch prediction technique.
+  - Branch prediction models: in this models, branch and jump instructions are optimized by using branch prediction technique. Two models contain static branch prediction (always-taken) and dynamic branch prediction (2 bit prediction).
     
 The detailed block diagram of stall model is depicted in the below picture.
 ![image](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/7c76f64d-d2dd-4e3c-b103-23eec925b33e)
@@ -15,6 +15,10 @@ The detailed block diagram of forwarding model is depicted in the below picture.
 
 The detailed block diagram of static branch prediction (always - taken) is depicted in the below picture.
 ![RV32I_pipeline_branch_prediction_alway_taken_model](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/2bb46602-b980-4718-a413-66f96afaf6ca)
+
+The block diagram of dynamic static prediction (2 bit prediction) is same with static branch prediction, there is an additional state machine describe 2 bit prediction in the below picture.
+![image](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/16c3abd7-50cd-4bda-a92a-5eebe0260ea2)
+
 
 
 In my repository, there are some files written by my teacher, so please do not share these documents widely.
