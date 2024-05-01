@@ -14,7 +14,8 @@ The detailed block diagram of forwarding model is depicted in the below picture.
 ![image](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/1931168b-d377-4fd8-a6bb-ac441b7074ef)
 
 The detailed block diagram of static branch prediction (always - taken) is depicted in the below picture.
-![RV32I_pipeline_branch_prediction_alway_taken_model](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/2bb46602-b980-4718-a413-66f96afaf6ca)
+![block_diagram_pipeline_branch_prediction_model](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/5559e36f-b25b-433c-820b-872a8f4752b1)
+
 
 The block diagram of dynamic static prediction (2 bit prediction) is same with static branch prediction, there is an additional state machine describe 2 bit prediction in the below picture.
 ![image](https://github.com/Stork1323/Risc-V-Pipelined-RV32I-/assets/136346435/16c3abd7-50cd-4bda-a92a-5eebe0260ea2)
