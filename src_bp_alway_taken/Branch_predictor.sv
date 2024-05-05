@@ -127,6 +127,8 @@ module Branch_predictor(
 			wrong_predicted_o = 2'b01;
 		else if ((pc_sel_w == 1'b1) & (hit_ex_i == 1'b0))
 			wrong_predicted_o = 2'b10;
+		else if ((pc_sel_w == 1'b1) & (hit_ex_i == 1'b1) & (alu_w != BTB_r[pc_ex_i[6:2]].target_pc))
+			wrong_predicted_o = 2'b10;
 		else wrong_predicted_o = 2'b0;
 	end
 	assign predicted_pc_o = BTB_r[pc_i[6:2]].target_pc;

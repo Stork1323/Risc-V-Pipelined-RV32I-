@@ -190,6 +190,8 @@ module Branch_predictor(
 			wrong_predicted_w = 2'b01;						// predict jump but wrong
 		else if ((pc_sel_w == 1'b1) & (hit_ex_i == 1'b0))
 			wrong_predicted_w = 2'b10;						// predict not jump but wrong
+		else if ((pc_sel_w == 1'b1) & (hit_ex_i == 1'b1) & (alu_w != BTB_r[pc_ex_i[6:2]].target_pc)) // jump to wrong address
+			wrong_predicted_w = 2'b10;
 		else wrong_predicted_w = 2'b0;
 		
 		case (predicted_2bit[pc_i[6:2]])
