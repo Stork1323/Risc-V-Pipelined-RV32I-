@@ -70,7 +70,14 @@ module Branch_predictor(
 	
 
 	// update BTB
-	assign BTB_temp_r = ((pc_sel_w) | (BTB_r[pc_ex_i[6:2]].valid)) ? ({pc_ex_i[31:12], 1'b1, alu_w}) : 53'b0;
+	//assign BTB_temp_r = ((pc_sel_w) | (BTB_r[pc_ex_i[6:2]].valid)) ? ({pc_ex_i[31:12], 1'b1, alu_w}) : 53'b0;
+	always_comb begin
+		//if ((pc_sel_w) | (BTB_r[pc_ex_i[6:2]].valid))
+		if (pc_sel_w)
+			BTB_temp_r = {pc_ex_i[31:12], 1'b1, alu_w};
+		//else BTB_temp_r = 53'b0;
+		else BTB_temp_r = BTB_r[pc_ex_i[6:2]];
+	end
 	assign index_w = pc_ex_i[6:2];
 	
 //	assign BTB_r[index_w] = (pc_sel_w) ? ({pc_ex_i[31:12], 1'b1, alu_w}) : 53'b0;
